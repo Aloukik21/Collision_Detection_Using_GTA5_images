@@ -1,0 +1,125 @@
+56762667 ----> adam resnxt modedd, with 1024 final layer and 4 cardinality-------------------[0.855]
+56763320 -----> adam resnext moded, with changes in conv2d and batchnormalization and c = 4  ......[0.84]
+56776900 -----> adam resnext, both before files but cardinaloity 64 and depth 2 senet [0.78]
+56806762------>>>adam resnext 3rd reduced perfomance so, reduced number of cov2d size  and c is 32  and depth 2 [0.81]
+56818528------->>> reduced mean resnext [0.88]
+56820636------->>senet with reacon and adam[0.90]
+
+56842086----->senet with reacon and momentum with 10 epochs[0.86](no feat)
+56842076------> reduced meaan plus momentum plus c=4 and 1024 with 10 epochs[0.776]
+
+56867525----->> reduced mearn plus reacon plus 1024 and c=4 (all together), adam and 10 epochs[0.82] (fullyconneced)
+56848915=======> reduced meanin c4 and 1024 with adam[0.894]
+56886250--------> reduced mearn plus reacon plus 512 and c=4 (all together), momentum and 10 epochs[0.81]
+
+#####----------------------update it tommorow below roc auc
+
+
+56939828------->gta_train.sh-------> senet with reacon and adom 512 and c=2 (no reduced mean) [0.894]
+56939861------->gta_train4.sh-------> senet with reacon and adom 512 and c=2 (no reduced mean) with feat off [0.865] finalized didint work..stopping
+56940218------->gta_train5.sh------->again merge reduced mean and senet tohgether [0.862]
+56941992------->gta_train2.sh------->senet with reacon and adom 1024 and c=4 with (no reduced mean)[0.869]
+56942089------->gta_train3.sh------->reduced mean c=6 1024 no reacon [0.89]
+
+56946079------->gta_train1.sh------->senet with reacon and adom 1024 and c=4 (no reduced mean) [0.85]
+
+
+
+
+
+#--------------------------------------------5 decemeber-----------------------
+
+gta_train.sh-------> senet with reacon and adom 256 and c=2 (no reduced mean) [0.905]#########wwoooaah
+gta_train1.sh-------> senet with reacon and adom 512 and c=8 (no reduced mean) [0.815]
+56991136 -----gta_train_eff--->efficentb5----->adam[0.82]
+57000541------>>gta_Train_effb7>>>>>>[0.78]
+57002861------>>gta_Train_effl2>>>>>> ran out of memory assigned 4 gpu now
+57003468------------>efficientb5----------------->with reducemean axis 2,3>>>>>[0.8555]
+57005843------------>efficiennetb0--------------->[0.80]
+
+
+##################### to be run
+
+57016863----------->gta_train.sh again -------> senet with reacon and adom 128 and c=2 (no reduced mean)[0.874]
+57029788------------>gta_train1.sh again -------> senet with reacon and adom 256 and c=2 (no reduced mean) + added 64 dense in the end just before dense 2[error]
+57017216------------>efficientb5----------------->with reducemean axis 1,2>>>>>[0.82]
+57026866------------>efficientb5-------256-128-64 layers-------->with reducemean axis 2,3>>>>>[0.833]
+57017723------->gta_train3.sh------------>reduced meanin c2 and 256 with adam[0.903]
+57026315--------------->gta_train4.sh=----------> reduced meanin c2 and 256 with adam and c=2 (no reduced mean) with 32 layer added[error]
+57027299--------------->gta_train5.sh----------->reduced meanin c8 and 256 with adam[0.8960]
+
+#all efficient with 512 top layer
+57026866------------>efficientb0----------------->0.80
+57032747------------>efficientb1----------------->0.79
+57032816------------>efficientb2----------------->0.81
+5701721------------>efficientb3-----------------> 0.82
+57032819------------>efficientb4----------------->0.816
+57003468------------>efficientb5----------------->0.855
+57032820------------>efficientb6----------------->0.766
+57000541------------>efficientb7----------------->0.78
+
+
+
+
+
+
+
+
+
+
+57016661------>>gta_Train_effl2>>>>>> ran out of memory assigned 4 gpu now (cancel right now)
+
+
+
+
+
+
+
+
+
+
+
+BEST OF BEST:
+
+56942089------->gta_train3.sh------->reduced mean c=6 1024 no reacon [0.89]
+56939828------->gta_train.sh-------> senet with reacon and adom 512 and c=2 (no reduced mean) [0.894]
+56820636------->>senet with reacon and adam[0.90]
+56848915=======> reduced meanin c4 and 1024 with adam[0.894]
+
+
+
+
+
+57085825 gtatrain ###resnext senetfile has been modifeied with reduce pooling in two time 256 layer   [failed]
+57139221 ##############gtatrain1---resnext senet with relu in transition lyer with 256 and global [0.905]
+
+57090988----gtatrain---reduction_ratio = 6 [0.9027]
+57091194----gtatrain2---reduction_ratio = 2 [0.899] extremely slow
+57091543---------gtatrain3----------blocks = 5  # res_block ! (split + transition)[0.895]
+57091550---------gtatrain4----------blocks = 10  # res_block ! (split + transition)[0.837]
+57092775----gtatrain5---no feat was there before so re ran with card 8 [0.8842]
+57139266-------gtatrain res-----resnet152[0.891]
+57171903----------effb5 with only 2 denselayer [0.8]
+57172043---------effb3 wuth use bias true [0.81117]------------------> 57326296 again run with 512 layers[ 0.81]
+
+
+57262096########3gtatrain1---resnext senet with relu in transition lyer with 256 and global [0.905]with sgd [0.79]
+57240241######-----dropout added to effb5 [0.81]
+57241719##--------1024 dense layer then 2 eeffb3 [0.809]
+57242145###--------effb4--------activation functios relu and softmax [0.7933]
+57280531###---effb5 with 512 layer dropouts [0.5] worst
+57286821------gtatrain1-----dense layer added 100 ---[0.910]#----------------------wwwwwooooaaaahhhhh best till 
+57326347---gta2---senet 256---added relu and batchnorm after reocon []
+57287707----gta3-----downsampling increase to 10 senet 256 ---[0.899]
+57326190----gta4----batch normalization removeed from gerenerator and added batchnorm+relu..senet256 [0.83]
+
+57326760----------gtatrain5-----senet dense layer added 500--[90.4]
+57326763---------gtatrain---senet dense layer added 1000--[91.05]
+57326841------------------gtatrain1-----500 dense then 100 [0.9076]
+57326884-----------------------------gtatrain3---1000 dense then 100 [90.98]
+57332132--------------gtatrain5----senet  dense layer 150 [0.9051]
+57347677-----gta3-------------2000 dense layer[90.8]
+57349210----------gta5------1500 layers [91.15]
+57355383----gta3-----1700 layers[]
+
+upcoming try 100 50 dense layer
