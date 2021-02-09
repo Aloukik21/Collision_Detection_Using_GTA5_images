@@ -31,11 +31,12 @@ and, first conv layer 1, last dense layer 1
 thus, total number of layers = (3*blocks)*residual_layer_num + 2
 """
 
+
 reduction_ratio = 4
 
 total_epochs = 100
 
-batch_size = 64
+
 image_size = 224
 img_channels = 3
 class_num = 2
