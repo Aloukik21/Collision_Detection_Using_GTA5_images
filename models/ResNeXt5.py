@@ -1,5 +1,4 @@
-###--resnet moded with batchnormalization changed and layers
-# -------------
+
 import tensorflow as tf
 from tflearn.layers.conv import global_avg_pool
 from tensorflow.contrib.layers import batch_norm, flatten
@@ -7,12 +6,7 @@ from tensorflow.contrib.framework import arg_scope
 import numpy as np
 import os
 
-# from tensorpack import imgaug, dataset, ModelDesc, InputDesc
-# from tensorpack.dataflow import (
-#     AugmentImageComponent, PrefetchDataZMQ,
-#     BatchData, MultiThreadMapData, DataFlow)
-# from dataflow_input import (MyDataFlow, data_augmentation)
-# from IPython import embed
+
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '3'
 
@@ -23,13 +17,6 @@ init_learning_rate = 0.1 * 5
 cardinality = 2  # how many split ?
 blocks = 3  # res_block ! (split + transition)
 depth = 64  # out channel
-
-"""
-So, the total number of layers is (3*blokcs)*residual_layer_num + 2
-because, blocks = split(conv 2) + transition(conv 1) = 3 layer
-and, first conv layer 1, last dense layer 1
-thus, total number of layers = (3*blocks)*residual_layer_num + 2
-"""
 
 
 reduction_ratio = 4
@@ -42,7 +29,7 @@ img_channels = 3
 class_num = 2
 
 iteration = 421
-# 128 * 421 ~ 53,879
+
 
 test_iteration = 10
 
@@ -54,11 +41,6 @@ ALLOWED_TYPES = (DEFAULT_DTYPE,) + CASTABLE_TYPES
 data_format = 'channels_first'
 
 
-# tf.layers.conv2d(
-# 			inputs=inputs, filters=filters, kernel_size=kernel_size, strides=strides,
-# 			padding=('SAME' if strides == 1 else 'VALID'), use_bias=False,
-# 			kernel_initializer=tf.variance_scaling_initializer(),
-# 			data_format=data_format)
 
 
 def conv_layer(input, filter, kernel, stride, padding='SAME', layer_name="conv"):
@@ -115,7 +97,7 @@ def tanh(x):
     return tf.tanh(x)
 
 
-def Concatenation(layers):
+def enation(layers):
     return tf.concat(layers, axis=3)
 
 
@@ -124,49 +106,6 @@ def Fully_connected(x, units=class_num, layer_name='fully_connected'):
         return tf.layers.dense(inputs=x, use_bias=False, units=units)
 
 
-def center_loss(features, label, alfa, nrof_classes):
-    """Center loss based on the paper "A Discriminative Feature Learning Approach for Deep Face Recognition"
-       (http://ydwen.github.io/papers/WenECCV16.pdf)
-    """
-    nrof_features = features.get_shape()[1]
-    centers = tf.get_variable('centers', [nrof_classes, nrof_features], dtype=tf.float32,
-                              initializer=tf.constant_initializer(0), trainable=False)
-    label = tf.reshape(label, [-1])
-    centers_batch = tf.gather(centers, label)
-    diff = (1 - alfa) * (centers_batch - features)
-    centers = tf.scatter_sub(centers, label, diff)
-    loss = tf.reduce_mean(tf.square(features - centers_batch))
-    return loss, centers
-
-
-def Evaluate(sess):
-    test_acc = 0.0
-    test_loss = 0.0
-
-    for it in range(test_iteration):
-        batch_data = next(scene_data_val)
-        test_batch_x = batch_data['data']
-        test_batch_y = batch_data['label']
-
-        test_feed_dict = {
-            x: test_batch_x,
-            label: test_batch_y,
-            learning_rate: epoch_learning_rate,
-            training_flag: False
-        }
-
-        loss_, acc_ = sess.run([cost, accuracy], feed_dict=test_feed_dict)
-
-        test_loss += loss_
-        test_acc += acc_
-
-    test_loss /= test_iteration  # average loss
-    test_acc /= test_iteration  # average accuracy
-
-    summary = tf.Summary(value=[tf.Summary.Value(tag='test_loss', simple_value=test_loss),
-                                tf.Summary.Value(tag='test_accuracy', simple_value=test_acc)])
-
-    return test_acc, test_loss, summary
 
 
 class ResNeXt5():
@@ -243,8 +182,7 @@ class ResNeXt5():
             return scale
 
     def residual_layer(self, input_x, out_dim, layer_num, res_block=blocks):
-        # split + transform(bottleneck) + transition + merge
-        # input_dim = input_x.get_shape().as_list()[-1]
+        
 
         for i in range(res_block):
             input_dim = int(np.shape(input_x)[-1])
@@ -286,7 +224,7 @@ class ResNeXt5():
             return x
 
     def Build_ResNext5(self, input_x):
-        # only cifar10 architecture
+     
 
         input_x = self.first_layer(input_x, scope='first_layer')
 
@@ -295,12 +233,11 @@ class ResNeXt5():
         x = self.residual_layer(x, out_dim=256, layer_num='3')
 
         recon_x = self.generator(x)
-        # recon_x = tf.cast(recon_x, dtype=tf.uint8)
+        
 
         x = Global_Average_Pooling(recon_x)
         x = flatten(x)
-        # x = tf.reshape(x, [-1, 96])
-        # x = tf.reshape(x, [-1, 2048])
+  
         feat = tf.nn.l2_normalize(x, 1, 1e-10, name='feat')
         # x = tf.reshape(x, [-1, 96])
         x = tf.layers.dense(inputs=feat, units=1500)
