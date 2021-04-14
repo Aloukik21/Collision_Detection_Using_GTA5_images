@@ -13,4 +13,4 @@ In recent days, with increased population and traffic on roadways, vehicle colli
 • Deployed deep learning models (SeNet, ResNeXt, EfficientNet) to outperform the existing model by the ROC-AUC of 0.915.
 • We used computeCanada cloud clusters with the configuration: 100G of ram, 24 CPUs and 16G v100l GPU. Applications: it can be used to increase safety in self-driving vehicles and can improve anti-collision algorithms.
 
-![alt text](3d architecture.png)
+![plot](3d architecture.png)
