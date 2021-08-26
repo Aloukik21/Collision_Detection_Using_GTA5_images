@@ -1,4 +1,4 @@
-#Computer canada CODE
+#Computecanada CODE
 #in models/resNeXt5 is the ResNext_SENet model.
 
 
